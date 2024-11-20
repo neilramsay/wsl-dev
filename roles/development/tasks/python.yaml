@@ -1,0 +1,20 @@
+- name: Install 3.13 + Pipx via Mise
+  ansible.builtin.command:
+    cmd: mise use -g python@3.12 pipx@latest
+    creates:
+      "{{ ansible_facts.user_dir }}/\
+      .local/share/mise/installs/pipx/latest/bin/pipx"
+
+- name: Install ArgComplete
+  ansible.builtin.command:
+    cmd: pipx install argcomplete
+    creates:
+      "{{ ansible_facts.user_dir }}/\
+      /.local/bin/register-python-argcomplete"
+
+-
+
+# echo 'fish_add_path --prepend $HOME/.local/bin' > ~/.config/fish/conf.d/path.fish
+# source ~/.config/fish/conf.d/path.fish
+# pipx install argcomplete
+# register-python-argcomplete --shell fish pipx > ~/.config/fish/completions/pipx.fish

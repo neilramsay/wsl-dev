@@ -1,0 +1,8 @@
+- name: Add ~/.local/bin to Fish Path
+  ansible.builtin.copy:
+    dest:
+      "{{ ansible_facts.user_dir }}/\
+      .config/fish/conf.d/path.fish"
+    mode: u=rw,g=r,o=r
+    content:
+      fish_add_path --prepend $HOME/.local/bin

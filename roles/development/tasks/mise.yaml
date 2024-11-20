@@ -1,0 +1,61 @@
+- name: Install Mise dependencies - Curl + GPG + Sudo + WGet
+  become: true
+  ansible.builtin.apt:
+    name:
+      - curl
+      - gpg
+      - sudo
+      - wget
+
+- name: Mise Apt
+  become: true
+  block:
+    - name: Fetch Mise Apt Keyring
+      ansible.builtin.get_url:
+        url: https://mise.jdx.dev/gpg-key.pub
+        dest: /etc/apt/keyrings/mise-archive-keyring.gpg
+        mode: u=rw,g=r,o=r
+
+    - name: Mise Apt Keyring
+      ansible.builtin.apt_key:
+        file: /etc/apt/keyrings/mise-archive-keyring.gpg
+
+    - name: Mise Apt Source
+      ansible.builtin.apt_repository:
+        repo:
+          deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=amd64]
+          https://mise.jdx.dev/deb stable main
+
+    - name: Install Mise
+      ansible.builtin.apt:
+        name: mise
+
+- name: Add Mise activation to Fish
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/mise.fish"
+    content: mise activate fish | source
+    mode: u=rw,g=rw,o=
+
+- name: Install "Usage" via Mise
+  ansible.builtin.command:
+    cmd: mise use -g usage
+    creates:
+      "{{ ansible_facts.user_dir }}/\
+      .local/share/mise/installs/usage/latest/bin/usage"
+
+- name: Mise Completion
+  block:
+    - name: Get Mise Completion
+      ansible.builtin.command:
+        cmd: usage generate completion fish mise
+      register: mise_fish_completion
+      changed_when: mise_fish_completion.rc != 0
+
+    - name: Write Mise Completion Files
+      when: mise_fish_completion.rc == 0
+      ansible.builtin.copy:
+        dest:
+          "{{ ansible_facts.user_dir }}/\
+          .config/fish/completions/mise.fish"
+        mode: u=rw,g=rw,o=
+        content: "{{ mise_fish_completion.stdout }}"

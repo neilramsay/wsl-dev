@@ -1,0 +1,5 @@
+- name: Include
+  loop:
+    - mise.yaml
+  ansible.builtin.include_tasks:
+    file: "{{ item }}"
