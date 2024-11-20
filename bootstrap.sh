@@ -11,4 +11,4 @@ python3 -m venv .venv &&
 source .venv/bin/activate &&
 pip install --require-virtualenv --requirement requirements.txt &&
 
-ansible-playbook playbook.yaml
+ansible-playbook --ask-become-pass playbook.yaml
