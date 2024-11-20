@@ -1,3 +1,12 @@
+- name: Vars
+  hosts: localhost
+  tasks:
+    - name: Vars
+      ansible.builtin.debug:
+        var: ansible_facts
+
 - name: Common Roles
   hosts: localhost
-  roles: []
+  roles:
+    - common
+    # - development

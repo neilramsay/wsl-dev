@@ -1,0 +1,14 @@
+- name: Ensure SystemD User directory permissions
+  become: true
+  ansible.builtin.file:
+    path: /run/user/{{ ansible_facts.user_gid }}
+    state: directory
+    mode: u=rwx,g=,o=
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
+
+- name: Ensure SystemD User running
+  become: true
+  ansible.builtin.systemd_service:
+    name: user@{{ ansible_facts.user_gid }}
+    state: started
