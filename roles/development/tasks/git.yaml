@@ -1,0 +1,106 @@
+- name: Install Git
+  become: true
+  ansible.builtin.apt:
+    name: git
+
+- name: Configure Git
+  block:
+    - name: Configure Git User Name
+      loop_control:
+        loop_var: git_config
+      loop:
+        - section: user
+          key: name
+          value: Neil Ramsay
+        - section: user
+          key: email
+          value: 2934552+neilramsay@users.noreply.github.com
+        - section: init
+          key: defaultBranch
+          value: main
+        - section: status
+          key: showStash
+          value: true
+        - section: fetch
+          key: prune
+          value: true
+        - section: fetch
+          key: pruneTags
+          value: true
+        - section: branch
+          key: autoSetupRebase
+          value: local
+        - section: commit
+          key: template
+          value: "{{ ansible_facts.user_dir }}/.gitmessage"
+      community.general.ini_file:
+        path: "{{ ansible_facts.user_dir }}/.gitconfig"
+        mode: u=rw,g=r,o=r
+        section: "{{ git_config.section }}"
+        option: "{{ git_config.key }}"
+        value: "{{ git_config.value }}"
+        
+
+    # - name: Configure Git User Email
+    #   community.general.ini_file:
+    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
+    #     mode: u=rw,g=r,o=r
+    #     section: user
+    #     option: email
+    #     value: 2934552+neilramsay@users.noreply.github.com
+
+    # - name: Configure Git Default Branch
+    #   community.general.ini_file:
+    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
+    #     mode: u=rw,g=r,o=r
+    #     section: init
+    #     option: defaultBranch
+    #     value: main
+
+    # - name: Configure Git Show Stash in git status
+    #   community.general.ini_file:
+    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
+    #     mode: u=rw,g=r,o=r
+    #     section: status
+    #     option: showStash
+    #     value: true
+
+    # - name: Configure Git Prune Branches on Fetch
+    #   community.general.ini_file:
+    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
+    #     mode: u=rw,g=r,o=r
+    #     section: fetch
+    #     option: prune
+    #     value: true
+
+    # - name: Configure Git Prune Tags on Fetch
+    #   community.general.ini_file:
+    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
+    #     mode: u=rw,g=r,o=r
+    #     section: fetch
+    #     option: pruneTags
+    #     value: true
+
+    # - name: Configure Git Setup Auto Rebase on Local
+    #   community.general.ini_file:
+    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
+    #     mode: u=rw,g=r,o=r
+    #     section: branch
+    #     option: autoSetupRebase
+    #     value: local
+
+    - name: Git Commit Template
+      block:
+        - name: Write Git Commit Template
+          ansible.builtin.copy:
+            src: gitmessage.txt
+            dest: "{{ ansible_facts.user_dir }}/.gitmessage"
+            mode: u=rw,g=r,o=r
+
+    #     - name: Configure Git Commit Template
+    #       community.general.ini_file:
+    #         path: "{{ ansible_facts.user_dir }}/.gitconfig"
+    #         mode: u=rw,g=r,o=r
+    #         section: commit
+    #         option: template
+    #         value: "{{ ansible_facts.user_dir }}/.gitmessage"

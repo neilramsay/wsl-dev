@@ -9,4 +9,4 @@
   hosts: localhost
   roles:
     - common
-    # - development
+    - development

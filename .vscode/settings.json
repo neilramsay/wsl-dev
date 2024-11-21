@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "*.yaml": "ansible"
-    }
+    },
+    "ansible.python.interpreterPath": "/home/agentnoel/wsl-dev/.venv/bin/python"
 }
