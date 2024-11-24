@@ -1,4 +1,12 @@
-- ansible.builtin.import_tasks: mise.yaml # noqa: name[missing]
-- ansible.builtin.import_tasks: shell.yaml # noqa: name[missing]
-- ansible.builtin.import_tasks: git.yaml # noqa: name[missing]
-- ansible.builtin.import_tasks: python.yaml # noqa: name[missing]
+- name: Set PATH
+  environment:
+    PATH: "{{ ansible_facts.user_dir }}/.local/bin:{{ ansible_env.PATH }}"
+  block:
+    - name: Install and Configure Mise
+      ansible.builtin.import_tasks: mise.yaml
+    - name: Install Configure shell
+      ansible.builtin.import_tasks: shell.yaml
+    - name: Install/Configure Git
+      ansible.builtin.import_tasks: git.yaml
+    - name: Install Python
+      ansible.builtin.import_tasks: python.yaml
