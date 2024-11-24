@@ -39,55 +39,6 @@
         section: "{{ git_config.section }}"
         option: "{{ git_config.key }}"
         value: "{{ git_config.value }}"
-        
-
-    # - name: Configure Git User Email
-    #   community.general.ini_file:
-    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
-    #     mode: u=rw,g=r,o=r
-    #     section: user
-    #     option: email
-    #     value: 2934552+neilramsay@users.noreply.github.com
-
-    # - name: Configure Git Default Branch
-    #   community.general.ini_file:
-    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
-    #     mode: u=rw,g=r,o=r
-    #     section: init
-    #     option: defaultBranch
-    #     value: main
-
-    # - name: Configure Git Show Stash in git status
-    #   community.general.ini_file:
-    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
-    #     mode: u=rw,g=r,o=r
-    #     section: status
-    #     option: showStash
-    #     value: true
-
-    # - name: Configure Git Prune Branches on Fetch
-    #   community.general.ini_file:
-    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
-    #     mode: u=rw,g=r,o=r
-    #     section: fetch
-    #     option: prune
-    #     value: true
-
-    # - name: Configure Git Prune Tags on Fetch
-    #   community.general.ini_file:
-    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
-    #     mode: u=rw,g=r,o=r
-    #     section: fetch
-    #     option: pruneTags
-    #     value: true
-
-    # - name: Configure Git Setup Auto Rebase on Local
-    #   community.general.ini_file:
-    #     path: "{{ ansible_facts.user_dir }}/.gitconfig"
-    #     mode: u=rw,g=r,o=r
-    #     section: branch
-    #     option: autoSetupRebase
-    #     value: local
 
     - name: Git Commit Template
       block:
