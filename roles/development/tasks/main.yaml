@@ -1,3 +1,7 @@
+- name: Debug
+  ansible.builtin.debug:
+    var: ansible_facts
+
 - name: Set PATH
   environment:
     PATH: "{{ ansible_facts.user_dir }}/.local/bin:{{ ansible_env.PATH }}"
