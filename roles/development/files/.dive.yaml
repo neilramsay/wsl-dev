@@ -1,0 +1,4 @@
+source: podman
+diff:
+  hide:
+    - unmodified

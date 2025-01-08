@@ -1,0 +1,32 @@
+- name: Install Podman
+  become: true
+  ansible.builtin.apt:
+    name:
+      - podman
+    state: present
+
+- name: Add Podman Socket env var
+  ansible.builtin.command:
+    argv:
+      - mise
+      - config
+      - set
+      - env.DOCKER_HOST
+      - unix:///run/user/{{ ansible_facts.user_uid }}/podman/podman.sock
+  register: mise_podman_env
+  changed_when: true
+
+- name: Install Dive
+  become: true
+  ansible.builtin.apt:
+    deb: "https://github.com/wagoodman/dive/releases/download/\
+      v{{ development_dive_version }}/dive_{{ development_dive_version }}\
+      _linux_amd64.deb"
+
+- name: Add Dive configuration
+  ansible.builtin.copy:
+    src: .dive.yaml
+    dest: "{{ ansible_facts.user_dir }}/.dive.yaml"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
+    mode: u=rw,g=r,o=r
