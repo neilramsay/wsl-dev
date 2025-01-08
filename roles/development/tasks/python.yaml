@@ -28,7 +28,9 @@
 
 - name: Pipx Fish Completions
   ansible.builtin.command:
-    cmd: '{{ ansible_facts.user_dir }}/.local/bin/register-python-argcomplete --shell fish pipx'
+    cmd:
+      "{{ ansible_facts.user_dir }}/\
+      .local/bin/register-python-argcomplete --shell fish pipx"
   register: pipx_fish_completions
   changed_when: pipx_fish_completions.rc != 0
 
