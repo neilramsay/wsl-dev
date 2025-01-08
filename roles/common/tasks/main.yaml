@@ -1,7 +1,8 @@
-- name: Include
-  loop:
-    - apt.yaml
-    - systemd-user.yaml
-    - shell.yaml
-  ansible.builtin.include_tasks:
-    file: "{{ item }}"
+- name: Apt
+  ansible.builtin.import_tasks: apt.yaml
+
+- name: SystemD
+  ansible.builtin.import_tasks: systemd-user.yaml
+
+- name: Shell
+  ansible.builtin.import_tasks: shell.yaml
