@@ -4,17 +4,17 @@
     update_cache: true
     upgrade: true
 
-# - name: Remove Ubuntu Landscape, Pro Client, and Snap
-#   become: true
-#   ansible.builtin.apt:
-#     name:
-#       - ubuntu-pro-client
-#       - ubuntu-pro-client-l10n
-#       - landscape-client
-#       - landscape-common
-#       - snapd
-#     state: absent
-#     autoremove: true
+- name: Remove Ubuntu Landscape, Pro Client, and Snap
+  become: true
+  ansible.builtin.apt:
+    name:
+      - ubuntu-pro-client
+      - ubuntu-pro-client-l10n
+      - landscape-client
+      - landscape-common
+      - snapd
+    state: absent
+    autoremove: true
 
 - name: Install WSLu
   become: true
