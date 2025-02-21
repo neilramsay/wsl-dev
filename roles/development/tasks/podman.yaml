@@ -16,12 +16,14 @@
   register: mise_podman_env
   changed_when: true
 
+# yamllint disable rule:quoted-strings
 - name: Install Dive
   become: true
   ansible.builtin.apt:
     deb: "https://github.com/wagoodman/dive/releases/download/\
       v{{ development_dive_version }}/dive_{{ development_dive_version }}\
       _linux_amd64.deb"
+# yamllint enable rule:quoted-strings
 
 - name: Add Dive configuration
   ansible.builtin.copy:

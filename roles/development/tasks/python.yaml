@@ -1,45 +1,105 @@
 - name: Install Python 3.13 (global default) via Mise
   ansible.builtin.command:
     cmd: mise use -g python@3.13
-    creates:
-      "{{ ansible_facts.user_dir }}/\
+    creates: "{{ ansible_facts.user_dir }}/\
       .local/share/mise/installs/python/3.13/bin/python3"
 
 - name: Install Python 3.12 via Mise
   ansible.builtin.command:
     cmd: mise install python@3.12
-    creates:
-      "{{ ansible_facts.user_dir }}/\
+    creates: "{{ ansible_facts.user_dir }}/\
       .local/share/mise/installs/python/3.12/bin/python3"
 
-- name: Install Pipx via Mise
-  ansible.builtin.command:
-    cmd: mise use -y -g pipx@latest
-    creates:
-      "{{ ansible_facts.user_dir }}/\
-      .local/share/mise/installs/pipx/latest/bin/pipx"
+- name: Pipx
+  when: false
+  block:
+    - name: Install Pipx via Mise
+      ansible.builtin.command:
+        cmd: mise use -y -g pipx@latest
+        creates: "{{ ansible_facts.user_dir }}/\
+          .local/share/mise/installs/pipx/latest/bin/pipx"
 
-- name: Install ArgComplete via Pipx
-  ansible.builtin.command:
-    cmd: mise exec pipx -- pipx install argcomplete
-    creates:
-      "{{ ansible_facts.user_dir }}/\
-      .local/bin/register-python-argcomplete"
+    - name: Install ArgComplete via Pipx
+      ansible.builtin.command:
+        cmd: mise exec pipx -- pipx install argcomplete
+        creates: "{{ ansible_facts.user_dir }}/\
+          .local/bin/register-python-argcomplete"
 
-- name: Pipx Fish Completions
-  ansible.builtin.command:
-    cmd:
-      "{{ ansible_facts.user_dir }}/\
-      .local/bin/register-python-argcomplete --shell fish pipx"
-  register: pipx_fish_completions
-  changed_when: pipx_fish_completions.rc != 0
+    - name: Pipx Fish Completions
+      ansible.builtin.command:
+        cmd: "{{ ansible_facts.user_dir }}/\
+          .local/bin/register-python-argcomplete --shell fish pipx"
+      register: pipx_fish_completions
+      changed_when: pipx_fish_completions.rc != 0
 
-- name: Install Pipx Fish Completions
-  ansible.builtin.copy:
-    dest:
-      "{{ ansible_facts.user_dir }}/\
-      .config/fish/completions/pipx.fish"
-    mode: u=rw,g=r=o=r
-    content:
-      "{{ pipx_fish_completions.stdout }}"
-  when: pipx_fish_completions.rc == 0
+    - name: Install Pipx Fish Completions
+      ansible.builtin.copy:
+        dest: "{{ ansible_facts.user_dir }}/\
+          .config/fish/completions/pipx.fish"
+        mode: u=rw,g=r=o=r
+        content: "{{ pipx_fish_completions.stdout }}"
+      when: pipx_fish_completions.rc == 0
+
+- name: Install Poetry
+  when: false
+  ansible.builtin.command:
+    argv:
+      - pipx
+      - install
+      - poetry
+  changed_when: true
+
+- name: Install UV OLD
+  when: false
+  ansible.builtin.command:
+    argv:
+      - pipx
+      - install
+      - uv
+  changed_when: true
+
+- name: UV
+  block:
+    - name: Get Checksum
+      ansible.builtin.uri:
+        url: https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz.sha256
+        dest: /tmp/
+      register: uv_hash
+    - name: Download UV
+      ansible.builtin.uri:
+        url: https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz
+        dest: /tmp/
+      register: uv_data
+      failed_when: "{{ uv_data.content | ansible.builtin.hash('sha256') == uv_hash.content }}"
+    - name: Unpack UV
+      ansible.builtin.unarchive:
+        src: /tmp/uv-x86_64-unknown-linux-gnu.tar.gz
+        dest: "{{ ansible_facts.user_dir }}/.local/bin/"
+        extra_opts:
+          - --strip-components=1
+
+- name: Ruff
+  block:
+    - name: Install Ruff
+      ansible.builtin.command:
+        argv:
+          - uvx
+          - install
+          - ruff
+        creates: "{{ ansible_facts.user_dir }}/.local/bin/ruff"
+
+    - name: Ruff Config
+      ansible.builtin.copy:
+        src: .ruff.toml
+        dest: "{{ ansible_facts.user_dir }}/.ruff.toml"
+        owner: "{{ ansible_facts.user_uid }}"
+        group: "{{ ansible_facts.user_gid }}"
+        mode: u=rw,g=r,o=r
+
+- name: Install ptpython
+  ansible.builtin.command:
+    argv:
+      - uvx
+      - install
+      - ptpython
+    creates: "{{ ansible_facts.user_dir }}/.local/bin/"

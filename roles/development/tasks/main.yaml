@@ -8,11 +8,13 @@
   block:
     - name: Install and Configure Mise
       ansible.builtin.import_tasks: mise.yaml
-    - name: Install Configure shell
-      ansible.builtin.import_tasks: shell.yaml
     - name: Install/Configure Git
       ansible.builtin.import_tasks: git.yaml
     - name: Install Python
       ansible.builtin.import_tasks: python.yaml
     - name: Install Podman
       ansible.builtin.import_tasks: podman.yaml
+    - name: Install Extras
+      ansible.builtin.import_tasks: extras.yaml
+    - name: Install Configure shell
+      ansible.builtin.import_tasks: shell.yaml

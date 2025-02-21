@@ -1,0 +1,19 @@
+[lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+# select = ["E4", "E7", "E9", "F"]
+
+
+# E - pycodestyle
+# I - isort
+# D - pydocstyle
+# UP - pyupgrade
+# flake8-annotations (ANN)
+# flake8-async (ASYNC)
+# flake8-comprehensions (C4)
+# flake8-datetimez (DTZ)
+# flake8-logging (LOG)
+# flake8-logging-format (G)
+
+extend-select = ["E", "I", "UP", "ANN", "ASYNC", "C4", "DTZ", "LOG", "G" ]
