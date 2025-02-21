@@ -4,6 +4,14 @@
     name: "{{ ansible_facts.user_id }}"
     shell: /usr/bin/fish
 
+- name: Make user fish directories
+  ansible.builtin.command:
+    argv:
+      - fish
+      - -c
+      - __fish_on_interactive
+    creates: "{{ ansible_facts.user_dir }}/.config/fish"
+
 - name: Set root user shell to fish
   become: true
   ansible.builtin.user:

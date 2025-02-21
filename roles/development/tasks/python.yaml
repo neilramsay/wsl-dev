@@ -60,17 +60,12 @@
 
 - name: UV
   block:
-    - name: Get Checksum
-      ansible.builtin.uri:
-        url: https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz.sha256
-        dest: /tmp/
-      register: uv_hash
     - name: Download UV
-      ansible.builtin.uri:
+      ansible.builtin.get_url:
         url: https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz
+        checksum: sha256:https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz.sha256
         dest: /tmp/
       register: uv_data
-      failed_when: "{{ uv_data.content | ansible.builtin.hash('sha256') == uv_hash.content }}"
     - name: Unpack UV
       ansible.builtin.unarchive:
         src: /tmp/uv-x86_64-unknown-linux-gnu.tar.gz
