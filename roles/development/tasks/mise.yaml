@@ -37,7 +37,7 @@
     cmd: mise use -g usage
     creates:
       "{{ ansible_facts.user_dir }}/\
-      .local/share/mise/installs/usage/latest/bin/usage"
+      .local/share/mise/installs/usage/latest/usage"
 
 - name: Mise Completion
   block:
