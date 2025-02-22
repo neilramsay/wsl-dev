@@ -64,6 +64,7 @@
       ansible.builtin.get_url:
         url: https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz
         checksum: sha256:https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz.sha256
+
         dest: /tmp/
       register: uv_data
     - name: Unpack UV
@@ -78,9 +79,10 @@
     - name: Install Ruff
       ansible.builtin.command:
         argv:
-          - uvx
+          - uv
+          - tool
           - install
-          - ruff
+          - ruff@latest
         creates: "{{ ansible_facts.user_dir }}/.local/bin/ruff"
 
     - name: Ruff Config
@@ -94,7 +96,8 @@
 - name: Install ptpython
   ansible.builtin.command:
     argv:
-      - uvx
+      - uv
+      - tool
       - install
-      - ptpython
+      - ptpython@latest
     creates: "{{ ansible_facts.user_dir }}/.local/bin/"
