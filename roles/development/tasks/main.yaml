@@ -6,6 +6,13 @@
   environment:
     PATH: "{{ ansible_facts.user_dir }}/.local/bin:{{ ansible_env.PATH }}"
   block:
+    - name: Make Local Bin
+      ansible.builtin.file:
+        path: "{{ ansible_facts.user_dir }}/.local/bin"
+        mode: u=rwx,g=rwx,o=rx
+        owner: "{{ ansible_facts.user_uid }}"
+        group: "{{ ansible_facts.user_gid }}"
+        state: directory
     - name: Install and Configure Mise
       ansible.builtin.import_tasks: mise.yaml
     - name: Install/Configure Git
