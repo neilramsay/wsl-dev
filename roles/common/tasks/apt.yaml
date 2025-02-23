@@ -25,3 +25,14 @@
   become: true
   ansible.builtin.apt:
     name: fish
+
+- name: Install Extras
+  become: true
+  loop_control:
+    loop_var: apt_extra
+  loop:
+    - htop
+    - ncdu
+  ansible.builtin.apt:
+    name: "{{ apt_extra }}"
+    state: present
