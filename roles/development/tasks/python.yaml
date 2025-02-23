@@ -10,6 +10,15 @@
     creates: "{{ ansible_facts.user_dir }}/\
       .local/share/mise/installs/python/3.12/bin/python3"
 
+- name: Require Pip to use a Virtual Environment
+  ansible.builtin.command:
+    argv:
+      - mise
+      - set
+      - --global
+      - PIP_REQUIRE_VIRTUALENV=true
+  changed_when: true
+
 - name: Pipx
   when: false
   block:
