@@ -7,21 +7,16 @@
       - qemu-user-static
     state: present
 
-- name: Podman Socket env var
+- name: Podman Socket
   block:
-    - name: Check Podman Socket env var
-      ansible.builtin.command:
-        argv:
-          - mise
-          - config
-          - get
-          - env.DOCKER_HOST
-      changed_when: podman_socket.rc != 0
-      ignore_errors: true
-      register: podman_socket
+    - name: Enable Podman User Socket
+      ansible.builtin.systemd:
+        scope: user
+        name: podman.socket
+        state: started
+        enabled: true
 
     - name: Add Podman Socket env var
-      when: podman_socket.rc != 0
       ansible.builtin.command:
         argv:
           - mise
@@ -29,7 +24,6 @@
           - set
           - env.DOCKER_HOST
           - unix:///run/user/{{ ansible_facts.user_uid }}/podman/podman.sock
-      register: mise_podman_env
       changed_when: true
 
 # yamllint disable rule:quoted-strings
