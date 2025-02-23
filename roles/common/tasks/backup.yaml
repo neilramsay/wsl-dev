@@ -1,0 +1,10 @@
+- name: Install Backup Tools
+  loop_control:
+    loop_var: backup_tool
+  loop:
+    - backupninja
+    - borgbackup
+  ansible.builtin.apt:
+    name: "{{ backup_tool }}"
+    state: present
+    update_cache: true
