@@ -5,7 +5,7 @@
 
 - name: Configure Git
   block:
-    - name: Configure Git User Name
+    - name: Configure Git - Personal Preferences
       loop_control:
         loop_var: git_config
       loop:
@@ -15,11 +15,59 @@
         - section: user
           key: email
           value: 2934552+neilramsay@users.noreply.github.com
+        - section: status
+          key: showStash
+          value: true
+        - section: branch
+          key: autoSetupRebase
+          value: local
+        - section: commit
+          key: template
+          value: ~/.gitmessage
+      community.general.ini_file:
+        path: "{{ ansible_facts.user_dir }}/.gitconfig"
+        mode: u=rw,g=r,o=r
+        section: "{{ git_config.section }}"
+        option: "{{ git_config.key }}"
+        value: "{{ git_config.value }}"
+    - name: Configure Git - Recommended Preference
+      # Taken from this block
+      # https://blog.gitbutler.com/how-git-core-devs-configure-git/
+      loop_control:
+        loop_var: git_config
+      loop:
+        - section: column
+          key: ui
+          value: auto
+        - section: branch
+          key: sort
+          value: -committerdate
+        - section: tag
+          key: sort
+          value: version:refname
         - section: init
           key: defaultBranch
           value: main
-        - section: status
-          key: showStash
+        - section: diff
+          key: algorithm
+          value: histogram
+        - section: diff
+          key: colorMoved
+          value: plain
+        - section: diff
+          key: mnemonicPrefix
+          value: true
+        - section: diff
+          key: renames
+          value: true
+        - section: push
+          key: default
+          value: simple
+        - section: push
+          key: autoSetupRemote
+          value: true
+        - section: push
+          key: followTags
           value: true
         - section: fetch
           key: prune
@@ -27,12 +75,33 @@
         - section: fetch
           key: pruneTags
           value: true
-        - section: branch
-          key: autoSetupRebase
-          value: local
+        - section: fetch
+          key: all
+          value: true
+        - section: help
+          key: autocorrect
+          value: prompt
         - section: commit
-          key: template
-          value: "{{ ansible_facts.user_dir }}/.gitmessage"
+          key: verbose
+          value: true
+        - section: rerere
+          key: enabled
+          value: true
+        - section: rerere
+          key: autoupdate
+          value: true
+        - section: core
+          key: excludesfile
+          value: ~/.gitignore
+        - section: rebase
+          key: autoSquash
+          value: true
+        - section: rebase
+          key: autoStash
+          value: true
+        - section: rebase
+          key: updateRefs
+          value: true
       community.general.ini_file:
         path: "{{ ansible_facts.user_dir }}/.gitconfig"
         mode: u=rw,g=r,o=r
