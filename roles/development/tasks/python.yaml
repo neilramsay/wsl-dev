@@ -84,6 +84,20 @@
         dest: "{{ ansible_facts.user_dir }}/.local/bin/"
         extra_opts:
           - --strip-components=1
+    - name: Get UV Fish Completions
+      ansible.builtin.command:
+        argv:
+          - uv
+          - generate-shell-completion
+          - fish
+        creates: "{{ ansible_facts.user_dir }}/.config/fish/completions/uv.fish"
+      register: fish_completions_uv
+    - name: Write UV Fish Completions # noqa: no-handler
+      ansible.builtin.copy:
+        content: "{{ fish_completions_uv.stdout }}"
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/uv.fish"
+        mode: u=rw,g=rw,o=rw
+      when: fish_completions_uv is changed
 
 - name: Ruff
   block:
