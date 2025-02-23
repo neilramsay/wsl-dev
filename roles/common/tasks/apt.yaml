@@ -19,7 +19,7 @@
 - name: Install WSLu
   become: true
   ansible.builtin.apt:
-    name: wsl
+    name: wslu
 
 - name: Install Fish shell
   become: true
