@@ -1,0 +1,13 @@
+- name: Install htop
+  become: true
+  ansible.builtin.apt:
+    name: htop
+    state: present
+
+- name: Configure htop
+  ansible.builtin.copy:
+    src: htoprc
+    dest: "{{ ansible_facts.user_dir }}/.config/htop/htoprc"
+    mode: u=rw,g=,o=
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"

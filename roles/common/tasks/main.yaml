@@ -1,6 +1,9 @@
 - name: Apt
   ansible.builtin.import_tasks: apt.yaml
 
+- name: Extras
+  ansible.builtin.import_tasks: extras.yaml
+
 - name: Backup
   ansible.builtin.import_tasks: backup.yaml
 

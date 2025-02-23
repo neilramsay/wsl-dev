@@ -31,7 +31,6 @@
   loop_control:
     loop_var: apt_extra
   loop:
-    - htop
     - ncdu
   ansible.builtin.apt:
     name: "{{ apt_extra }}"
