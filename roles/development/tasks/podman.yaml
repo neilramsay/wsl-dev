@@ -3,6 +3,8 @@
   ansible.builtin.apt:
     name:
       - podman
+      - podman-docker
+      - qemu-user-static
     state: present
 
 - name: Podman Socket env var
