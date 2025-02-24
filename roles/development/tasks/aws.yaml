@@ -1,0 +1,40 @@
+- name: AWS CLI
+  block:
+    - name: Install AWS CLI
+      ansible.builtin.command:
+        argv:
+          - mise
+          - use
+          - --global
+          - awscli
+        creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/awscli/latest/aws/dist/aws"
+    - name: AWS Completer
+      ansible.builtin.copy:
+        src: fish/aws.fish
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/aws.fish"
+        mode: u=rw,g=rw,o=r
+
+- name: AWS SAM CLI
+  block:
+    - name: Install AWS SAM CLI
+      ansible.builtin.command:
+        argv:
+          - uv
+          - tool
+          - install
+          - aws-sam-cli
+        creates: "{{ ansible_facts.user_dir }}/.local/bin/sam"
+    - name: SAM Completion
+      ansible.builtin.command:
+        argv:
+          - sam
+        creates: "{{ ansible_facts.user_dir }}/.config/fish/completions/sam.fish"
+      environment:
+        _SAM_COMPLETE: fish_source
+      register: fish_completions_aws_sam
+    - name: SAM Completion File
+      ansible.builtin.copy:
+        content: "{{ fish_completions_aws_sam.stdout }}"
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/sam.fish"
+        mode: u=rw,g=rw,o=r
+        force: false

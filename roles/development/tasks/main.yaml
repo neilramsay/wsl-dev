@@ -25,3 +25,5 @@
       ansible.builtin.import_tasks: extras.yaml
     - name: Install Configure shell
       ansible.builtin.import_tasks: shell.yaml
+    - name: Install AWS Tools
+      ansible.builtin.import_tasks: aws.yaml
