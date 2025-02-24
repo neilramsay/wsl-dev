@@ -35,8 +35,9 @@
         path: "{{ ansible_facts.user_dir }}/.gitconfig"
         mode: u=rw,g=r,o=r
         section: "{{ git_config.section }}"
-        option: "{{ git_config.key }}"
+        option: "\t{{ git_config.key }}"
         value: "{{ git_config.value }}"
+
     - name: Configure Git - Recommended Preference
       # Taken from this block
       # https://blog.gitbutler.com/how-git-core-devs-configure-git/
@@ -113,7 +114,7 @@
         path: "{{ ansible_facts.user_dir }}/.gitconfig"
         mode: u=rw,g=r,o=r
         section: "{{ git_config.section }}"
-        option: "{{ git_config.key }}"
+        option: "\t{{ git_config.key }}"
         value: "{{ git_config.value }}"
 
     - name: Git Commit Template
