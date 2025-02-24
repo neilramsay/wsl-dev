@@ -33,7 +33,7 @@
           - use
           - --global
           - ripgrep
-        creates: "{{ ansible_facts.user_dir }}/.local/share/mise/ripgrep/latest/*/rg"
+        creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/ripgrep/latest/*/rg"
     - name: RipGrep completions
       ansible.builtin.command:
         argv:
