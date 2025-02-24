@@ -24,6 +24,13 @@
         - section: commit
           key: template
           value: ~/.gitmessage
+        - section: core
+          key: editor
+          value: code --wait
+        - section: credential
+          key: helper
+          value:
+            /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
       community.general.ini_file:
         path: "{{ ansible_facts.user_dir }}/.gitconfig"
         mode: u=rw,g=r,o=r
