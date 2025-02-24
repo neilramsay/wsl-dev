@@ -24,8 +24,9 @@
           - set
           - env.DOCKER_HOST
           - unix:///run/user/{{ ansible_facts.user_uid }}/podman/podman.sock
-      changed_when: true
-      when: '"PIP_REQUIRE_VIRTUALENV" not in ansible_env'
+      # changed_when: true
+      # when: '"PIP_REQUIRE_VIRTUALENV" not in ansible_env'
+      changed_when: '"PIP_REQUIRE_VIRTUALENV" not in ansible_env'
 
 # yamllint disable rule:quoted-strings
 - name: Install Dive
