@@ -17,9 +17,7 @@
       - set
       - --global
       - PIP_REQUIRE_VIRTUALENV=true
-  # when: ansible_env.PIP_REQUIRE_VIRTUALENV!='true'
-  #  lookup('env', 'PIP_REQUIRE_VIRTUALENV')
-  when: '"PIP_REQUIRE_VIRTUALENV" not in ansible_env'
+  changed_when: '"PIP_REQUIRE_VIRTUALENV" not in ansible_env'
 
 - name: UV
   block:
@@ -51,7 +49,7 @@
         content: "{{ fish_completions_uv.stdout }}"
         dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/uv.fish"
         mode: u=rw,g=rw,o=rw
-      when: fish_completions_uv is changed
+        force: false
 
 - name: Ruff
   block:
