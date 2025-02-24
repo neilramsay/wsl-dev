@@ -12,7 +12,7 @@
       - use
       - -g
       - lsd
-  changed_when: true
+    creates: /home/neilramsay/.local/share/mise/installs/lsd/*/lsd
 
 - name: Install LSD Fish Functions
   ansible.builtin.copy:
@@ -21,4 +21,3 @@
     owner: "{{ ansible_facts.user_uid }}"
     group: "{{ ansible_facts.user_gid }}"
     mode: u=rw,g=r,o=r
-  changed_when: true
