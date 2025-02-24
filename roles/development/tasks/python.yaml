@@ -17,7 +17,9 @@
       - set
       - --global
       - PIP_REQUIRE_VIRTUALENV=true
-  changed_when: true
+  # when: ansible_env.PIP_REQUIRE_VIRTUALENV!='true'
+  #  lookup('env', 'PIP_REQUIRE_VIRTUALENV')
+  when: '"PIP_REQUIRE_VIRTUALENV" not in ansible_env'
 
 - name: UV
   block:
