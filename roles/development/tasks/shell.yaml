@@ -5,19 +5,44 @@
     mode: u=rw,g=r,o=r
     content: fish_add_path --prepend $HOME/.local/bin
 
-- name: Install LSD
-  ansible.builtin.command:
-    argv:
-      - mise
-      - use
-      - -g
-      - lsd
-    creates: /home/neilramsay/.local/share/mise/installs/lsd/*/lsd
+- name: LSD
+  block:
+    - name: Install LSD
+      ansible.builtin.command:
+        argv:
+          - mise
+          - use
+          - --global
+          - lsd
+        creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/lsd/latest/*/lsd"
 
-- name: Install LSD Fish Functions
-  ansible.builtin.copy:
-    src: fish/lsd.fish
-    dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/lsd.fish"
-    owner: "{{ ansible_facts.user_uid }}"
-    group: "{{ ansible_facts.user_gid }}"
-    mode: u=rw,g=r,o=r
+    - name: Install LSD Fish Functions
+      ansible.builtin.copy:
+        src: fish/lsd.fish
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/lsd.fish"
+        owner: "{{ ansible_facts.user_uid }}"
+        group: "{{ ansible_facts.user_gid }}"
+        mode: u=rw,g=r,o=r
+
+- name: RipGrep
+  block:
+    - name: Install RipGrep
+      ansible.builtin.command:
+        argv:
+          - mise
+          - use
+          - --global
+          - ripgrep
+        creates: "{{ ansible_facts.user_dir }}/.local/share/mise/ripgrep/latest/*/rg"
+    - name: RipGrep completions
+      ansible.builtin.command:
+        argv:
+          - rg
+          - --generate=complete-fish
+        creates: "{{ ansible_facts.user_dir }}/.config/fish/completions/rg.fish"
+      register: fish_completions_rg
+    - name: Write RipGrep completions
+      ansible.builtin.copy:
+        content: "{{ fish_completions_rg.stdout }}"
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/rg.fish"
+        mode: u=rw,g=rw,o=r
