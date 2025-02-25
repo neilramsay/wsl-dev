@@ -5,10 +5,8 @@ PROJECT=${1:-"wsl-dev"}
 sudo apt-get update &&
 sudo apt-get install python3-venv &&
 
-git clone https://github.com/neilramsay/${PROJECT}.git &&
-cd ${PROJECT} &&
-python3 -m venv .venv &&
-source .venv/bin/activate &&
-pip install --require-virtualenv --requirement requirements.txt &&
+python3 -m venv ansible &&
+source ansible/bin/activate &&
+pip install --require-virtualenv ansible &&
 
-ansible-playbook --ask-become-pass playbook.yaml
+ansible-pull -K -U https://github.com/neilramsay/${PROJECT}.git
