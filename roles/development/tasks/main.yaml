@@ -10,8 +10,6 @@
       ansible.builtin.file:
         path: "{{ ansible_facts.user_dir }}/.local/bin"
         mode: u=rwx,g=rwx,o=rx
-        owner: "{{ ansible_facts.user_uid }}"
-        group: "{{ ansible_facts.user_gid }}"
         state: directory
     - name: Install and Configure Mise
       ansible.builtin.import_tasks: mise.yaml

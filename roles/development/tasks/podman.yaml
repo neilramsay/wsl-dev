@@ -39,6 +39,4 @@
   ansible.builtin.copy:
     src: .dive.yaml
     dest: "{{ ansible_facts.user_dir }}/.dive.yaml"
-    owner: "{{ ansible_facts.user_uid }}"
-    group: "{{ ansible_facts.user_gid }}"
     mode: u=rw,g=r,o=r
