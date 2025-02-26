@@ -3,9 +3,11 @@
 PROJECT=${1:-"wsl-dev"}
 
 sudo apt-get update &&
-sudo apt-get install python3-venv &&
+sudo apt-get install -y python3-venv
 
-python3 -m venv ansible &&
+if ! test -d ansible; then
+    python3 -m venv ansible
+fi
 source ansible/bin/activate &&
 pip install --require-virtualenv ansible &&
 
