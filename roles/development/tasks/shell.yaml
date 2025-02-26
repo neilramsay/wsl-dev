@@ -44,3 +44,8 @@
         content: "{{ fish_completions_rg.stdout }}"
         dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/rg.fish"
         mode: u=rw,g=rw,o=r
+    - name: Install RipGrep Fish Functions
+      ansible.builtin.copy:
+        src: fish/rg.fish
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/rg.fish"
+        mode: u=rw,g=r,o=r
