@@ -5,6 +5,12 @@
     mode: u=rw,g=r,o=r
     content: fish_add_path --prepend $HOME/.local/bin
 
+- name: Update Fish History Command to show date+time
+  ansible.builtin.copy:
+    src: fish/history.fish
+    dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/history.fish"
+    mode: u=rw,g=r,o=r
+
 - name: LSD
   block:
     - name: Install LSD
