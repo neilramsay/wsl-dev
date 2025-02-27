@@ -44,8 +44,8 @@
         - name: Mangle LSD Completions for ls alias
           ansible.builtin.replace:
             path: "{{ ansible_facts.user_dir }}/.config/fish/completions/ls.fish"
-            regexp: "^complete -c lsd"
-            replace: "complete -c ls"
+            regexp: ^complete -c lsd
+            replace: complete -c ls
 
 - name: RipGrep
   block:
@@ -57,18 +57,30 @@
           - --global
           - ripgrep
         creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/ripgrep/latest/*/rg"
-    - name: RipGrep completions
-      ansible.builtin.command:
-        argv:
-          - rg
-          - --generate=complete-fish
-        creates: "{{ ansible_facts.user_dir }}/.config/fish/completions/rg.fish"
-      register: fish_completions_rg
-    - name: Write RipGrep completions
-      ansible.builtin.copy:
-        content: "{{ fish_completions_rg.stdout }}"
-        dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/rg.fish"
-        mode: u=rw,g=rw,o=r
+    - name: RipGrep Completions
+      block:
+        - name: Locate RipGrep Completions
+          ansible.builtin.find:
+            paths:
+              - "{{ ansible_facts.user_dir }}/.local/share/mise/installs/ripgrep/latest/"
+            recurse: true
+            patterns:
+              - rg.fish
+          register: fish_completions_ripgrep_paths
+        - name: Install RipGrep Completions
+          loop:
+            - rg
+            - grep
+          ansible.builtin.copy:
+            remote_src: true
+            src: "{{ fish_completions_ripgrep_paths.files[0].path }}"
+            dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/{{ item }}.fish"
+            mode: u=rw,g=r,o=r
+        - name: Mangle RipGrep Completions for grep alias
+          ansible.builtin.replace:
+            path: "{{ ansible_facts.user_dir }}/.config/fish/completions/grep.fish"
+            regexp: ^complete -c rg
+            replace: complete -c grep
     - name: Install RipGrep Fish Functions
       ansible.builtin.copy:
         src: fish/rg.fish
