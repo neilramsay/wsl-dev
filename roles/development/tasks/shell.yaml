@@ -32,20 +32,17 @@
             patterns:
               - lsd.fish
           register: fish_completions_lsd_paths
-        - name: Install LSD Completions
-          loop:
-            - lsd
-            - ls
+        - name: Install LSD Completion
           ansible.builtin.copy:
             remote_src: true
             src: "{{ fish_completions_lsd_paths.files[0].path }}"
-            dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/{{ item }}.fish"
+            dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/lsd.fish"
             mode: u=rw,g=r,o=r
-        - name: Mangle LSD Completions for ls alias
-          ansible.builtin.replace:
-            path: "{{ ansible_facts.user_dir }}/.config/fish/completions/ls.fish"
-            regexp: ^complete -c lsd
-            replace: complete -c ls
+        - name: Install LSD Fish Functions
+          ansible.builtin.copy:
+            src: fish/lsd.fish
+            dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/lsd.fish"
+            mode: u=rw,g=r,o=r
 
 - name: RipGrep
   block:
@@ -68,19 +65,11 @@
               - rg.fish
           register: fish_completions_ripgrep_paths
         - name: Install RipGrep Completions
-          loop:
-            - rg
-            - grep
           ansible.builtin.copy:
             remote_src: true
             src: "{{ fish_completions_ripgrep_paths.files[0].path }}"
-            dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/{{ item }}.fish"
+            dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/rg.fish"
             mode: u=rw,g=r,o=r
-        - name: Mangle RipGrep Completions for grep alias
-          ansible.builtin.replace:
-            path: "{{ ansible_facts.user_dir }}/.config/fish/completions/grep.fish"
-            regexp: ^complete -c rg
-            replace: complete -c grep
     - name: Install RipGrep Fish Functions
       ansible.builtin.copy:
         src: fish/rg.fish

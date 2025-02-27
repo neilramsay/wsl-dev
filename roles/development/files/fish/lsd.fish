@@ -5,3 +5,5 @@ end
 function tree --wraps tree
     lsd --tree  --classify $argv
 end
+
+complete --command ls --wraps lsd
