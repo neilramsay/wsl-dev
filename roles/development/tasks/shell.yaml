@@ -22,11 +22,30 @@
           - lsd
         creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/lsd/latest/*/lsd"
 
-    - name: Install LSD Fish Functions
-      ansible.builtin.copy:
-        src: fish/lsd.fish
-        dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/lsd.fish"
-        mode: u=rw,g=r,o=r
+    - name: LSD Completions
+      block:
+        - name: Locate LSD Completions
+          ansible.builtin.find:
+            paths:
+              - "{{ ansible_facts.user_dir }}/.local/share/mise/installs/lsd/latest/"
+            recurse: true
+            patterns:
+              - lsd.fish
+          register: fish_completions_lsd_paths
+        - name: Install LSD Completions
+          loop:
+            - lsd
+            - ls
+          ansible.builtin.copy:
+            remote_src: true
+            src: "{{ fish_completions_lsd_paths.files[0].path }}"
+            dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/{{ item }}.fish"
+            mode: u=rw,g=r,o=r
+        - name: Mangle LSD Completions for ls alias
+          ansible.builtin.replace:
+            path: "{{ ansible_facts.user_dir }}/.config/fish/completions/ls.fish"
+            regexp: "^complete -c lsd"
+            replace: "complete -c ls"
 
 - name: RipGrep
   block:
