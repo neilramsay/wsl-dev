@@ -2,13 +2,17 @@
 
 PROJECT=${1:-"wsl-dev"}
 
-sudo apt-get update &&
-sudo apt-get install -y python3-venv
+if ! test -f /usr/share/doc/python3-venv; then
+    sudo apt-get update &&
+    sudo apt-get install -y python3-venv
+fi
 
 if ! test -d ansible; then
-    python3 -m venv ansible
+    python3 -m venv ansible &&
+    source ansible/bin/activate &&
+    pip install --require-virtualenv ansible
+else
+    source ansible/bin/activate
 fi
-source ansible/bin/activate &&
-pip install --require-virtualenv ansible &&
 
 ansible-pull -U https://github.com/neilramsay/${PROJECT}.git
