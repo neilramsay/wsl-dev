@@ -27,3 +27,5 @@
       ansible.builtin.import_tasks: shell.yaml
     - name: Install AWS Tools
       ansible.builtin.import_tasks: aws.yaml
+    - name: Install Terraform
+      ansible.builtin.import_tasks: terraform.yaml
