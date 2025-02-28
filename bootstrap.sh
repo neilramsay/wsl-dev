@@ -2,7 +2,7 @@
 
 PROJECT=${1:-"wsl-dev"}
 
-if ! test -f /usr/share/doc/python3-venv; then
+if ! test -d /usr/share/doc/python3-venv; then
     sudo apt-get update &&
     sudo apt-get install -y python3-venv
 fi
