@@ -11,4 +11,4 @@ fi
 source ansible/bin/activate &&
 pip install --require-virtualenv ansible &&
 
-ansible-pull -K -U https://github.com/neilramsay/${PROJECT}.git
+ansible-pull -U https://github.com/neilramsay/${PROJECT}.git
