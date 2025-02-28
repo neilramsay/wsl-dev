@@ -1,0 +1,34 @@
+- name: Parallel Node Package Manager (NPM)
+  block:
+    - name: Install NodeJS
+      ansible.builtin.command:
+        argv:
+          - mise
+          - use
+          - --global
+          - nodejs@22
+        creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/node/latest/bin/node"
+    - name: Install PNPM
+      ansible.builtin.command:
+        argv:
+          - mise
+          - use
+          - --global
+          - pnpm
+        creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/pnpm/latest/pnpm"
+    - name: Create PNPM working dir
+      ansible.builtin.file:
+        path: "{{ ansible_facts.user_dir }}/.local/share/pnpm"
+        state: directory
+        mode: u=rwx,g=rwx,o=rx
+    - name: Copy PNPM executable to working dir
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/pnpm/latest/pnpm"
+        dest: "{{ ansible_facts.user_dir }}/.local/share/pnpm/pnpm"
+        mode: u=rwx,g=x,o=x
+    - name: PNPM Fish env
+      ansible.builtin.template:
+        src: pnpm/pnpm.fish.j2
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/pnpm.fish"
+        mode: u=rw,g=rw,o=r
