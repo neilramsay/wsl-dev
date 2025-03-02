@@ -5,6 +5,8 @@ PROJECT=${1:-"wsl-dev"}
 if ! test -d /usr/share/doc/python3-venv; then
     sudo apt-get update &&
     sudo apt-get install -y python3-venv
+else
+    sudo true
 fi
 
 if ! test -d ansible; then
