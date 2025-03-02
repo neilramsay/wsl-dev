@@ -29,3 +29,5 @@
       ansible.builtin.import_tasks: aws.yaml
     - name: Install Terraform
       ansible.builtin.import_tasks: terraform.yaml
+    - name: Install SSH Agent
+      ansible.builtin.import_tasks: ssh.yaml

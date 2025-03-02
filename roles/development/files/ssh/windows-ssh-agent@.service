@@ -1,0 +1,8 @@
+[Unit]
+Description=SSH Agent bridge between WSL2 and Windows
+Requires=windows-ssh-agent.socket
+
+[Service]
+Type=simple
+StandardInput=socket
+ExecStart=%h/.local/bin/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent

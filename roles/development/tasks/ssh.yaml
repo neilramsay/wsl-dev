@@ -1,0 +1,32 @@
+- name: Copy pre-compiled npiperelay for Windows SSH Agent
+  ansible.builtin.copy:
+    src: npiperelay.exe
+    dest: "{{ ansible_facts.user_dir }}/.local/bin/"
+    mode: u=rx,g=rx,o=rx
+
+- name: Copy Windows SSH Agent SystemD User Units
+  loop:
+    - windows-ssh-agent.socket
+    - windows-ssh-agent@.service
+  ansible.builtin.copy:
+    src: ssh/{{ item }}
+    dest: "{{ ansible_facts.user_dir }}/.config/systemd/user/"
+    mode: u=rw,g=r,o=r
+
+- name: Activate Windows SSH Agent Socket
+  ansible.builtin.command:
+    argv:
+      - systemctl
+      - --user
+      - enable
+      - windows-ssh-agent.socket
+    creates: "{{ ansible_facts.user_dir }}/.config/systemd/user/sockets.target.wants/windows-ssh-agent.socket"
+
+- name: Set user SSH Agent Socket path
+  ansible.builtin.command:
+    argv:
+      - mise
+      - set
+      - --global
+      - SSH_AUTH_SOCK={{ ansible_env.XDG_RUNTIME_DIR }}ssh/ssh-agent.sock
+  changed_when: true

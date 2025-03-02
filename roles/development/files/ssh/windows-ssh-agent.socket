@@ -1,0 +1,11 @@
+[Unit]
+Description=SSH Agent Socket bridge between WSL2 and Windows
+
+[Socket]
+ListenStream=%t/ssh/ssh-agent.sock
+Accept=yes
+SocketMode=0600
+DirectoryMode=0700
+
+[Install]
+WantedBy=sockets.target
