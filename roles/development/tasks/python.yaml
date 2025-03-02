@@ -50,6 +50,16 @@
         dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/uv.fish"
         mode: u=rw,g=rw,o=rw
         force: false
+    - name: Configure Mise to use UV (experimental)
+      loop:
+        - experimental=true
+        - python.uv_venv_auto=true
+      ansible.builtin.command:
+        argv:
+          - mise
+          - settings
+          - "{{ item }}"
+      changed_when: true
 
 - name: Ruff
   block:
