@@ -31,3 +31,5 @@
       ansible.builtin.import_tasks: terraform.yaml
     - name: Install SSH Agent
       ansible.builtin.import_tasks: ssh.yaml
+    - name: Install VSCode
+      ansible.builtin.import_tasks: vscode.yaml
