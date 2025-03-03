@@ -1,0 +1,35 @@
+- name: Install VSCode Server
+  ansible.builtin.command:
+    chdir: "{{ ansible_facts.user_dir }}"
+    argv:
+      - code
+      - --version
+    creates: "{{ ansible_facts.user_dir }}/.vscode-server"
+
+- name: Install VSCode Extensions
+  loop:
+    - amazonwebservices.aws-toolkit-vscode
+    - bierner.markdown-mermaid
+    - boto3typed.boto3-ide
+    - charliermarsh.ruff
+    - davidanson.vscode-markdownlint
+    - eamodio.gitlens
+    - editorconfig.editorconfig
+    - esbenp.prettier-vscode
+    - hashicorp.terraform
+    - kddejong.vscode-cfn-lint
+    - ms-python.black-formatter
+    - ms-python.debugpy
+    - ms-python.mypy-type-checker
+    - ms-python.python
+    - ms-python.vscode-pylance
+    - njpwerner.autodocstring
+    - redhat.vscode-xml
+    - redhat.vscode-yaml
+  ansible.builtin.command:
+    chdir: "{{ ansible_facts.user_dir }}"
+    argv:
+      - code
+      - --install-extension
+      - "{{ item }}"
+    creates: "{{ ansible_facts.user_dir }}/.vscode-server/extensions/{{ item }}*/"
