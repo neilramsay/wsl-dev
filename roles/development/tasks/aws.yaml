@@ -3,11 +3,12 @@
     - name: Install AWS CLI
       ansible.builtin.command:
         argv:
-          - mise
-          - use
-          - --global
-          - awscli
-        creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/awscli/latest/aws/dist/aws"
+          - uv
+          - tool
+          - install
+          - --python=3.12
+          - uv tool install git+https://github.com/aws/aws-cli.git@v2
+        creates: "{{ ansible_facts.user_dir }}/.local/bin/aws"
     - name: AWS Completer
       ansible.builtin.copy:
         src: fish/aws.fish
