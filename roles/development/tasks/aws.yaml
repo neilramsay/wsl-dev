@@ -1,6 +1,7 @@
 - name: AWS CLI
   block:
     - name: Install AWS CLI
+      async: 300
       ansible.builtin.command:
         argv:
           - uv
@@ -41,6 +42,7 @@
         force: false
 
 - name: AWS CDK
+  async: 30
   ansible.builtin.command:
     argv:
       - "{{ ansible_facts.user_dir }}/.local/share/mise/installs/pnpm/latest/pnpm"
@@ -53,6 +55,7 @@
     PATH: "{{ ansible_env.PATH }}:{{ ansible_facts.user_dir }}/.local/share/pnpm"
 
 - name: AWS CodeCommit Git
+  async: 30
   ansible.builtin.command:
     argv:
       - uv
@@ -62,11 +65,13 @@
     creates: "{{ ansible_facts.user_dir }}/.local/bin/git-remote-codecommit"
 
 - name: AWS Session Manager Plugin
+  async: 30
   become: true
   ansible.builtin.apt:
     deb: https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb
 
 - name: CloudFormation Lint
+  async: 30
   ansible.builtin.command:
     argv:
       - uv

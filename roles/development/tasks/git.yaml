@@ -117,10 +117,8 @@
         option: "\t{{ git_config.key }}"
         value: "{{ git_config.value }}"
 
-    - name: Git Commit Template
-      block:
-        - name: Write Git Commit Template
-          ansible.builtin.copy:
-            src: gitmessage.txt
-            dest: "{{ ansible_facts.user_dir }}/.gitmessage"
-            mode: u=rw,g=r,o=r
+    - name: Write Git Commit Template
+      ansible.builtin.copy:
+        src: gitmessage.txt
+        dest: "{{ ansible_facts.user_dir }}/.gitmessage"
+        mode: u=rw,g=r,o=r
