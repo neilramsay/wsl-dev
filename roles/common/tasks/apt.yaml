@@ -5,16 +5,27 @@
     upgrade: true
 
 - name: Remove Packages
-  become: true
-  ansible.builtin.apt:
-    name: "{{ common_apt_packages_remove }}"
-    state: absent
-    purge: true
+  block:
+    - name: List Packages to Remove
+      ansible.builtin.debug:
+        var: common_apt_packages_remove
+    - name: Remove Packages
+      become: true
+      ansible.builtin.apt:
+        name: "{{ common_apt_packages_remove }}"
+        state: absent
+        purge: true
+        autoremove: true
 
 - name: Add Packages
-  become: true
-  ansible.builtin.apt:
-    name: "{{ common_apt_packages_install }}"
-    state: present
-    install_recommends: false
-    purge: true
+  block:
+    - name: List Packages to Add
+      ansible.builtin.debug:
+        var: common_apt_packages_install
+    - name: Add Packages
+      become: true
+      ansible.builtin.apt:
+        name: "{{ common_apt_packages_install }}"
+        state: present
+        install_recommends: false
+        purge: true
