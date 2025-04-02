@@ -1,0 +1,10 @@
+apt_packages_install:
+  - fish
+  -
+
+apt_packages_remove:
+  - ubuntu-pro-client
+  - ubuntu-pro-client-l10n
+  - landscape-client
+  - landscape-common
+  - snapd

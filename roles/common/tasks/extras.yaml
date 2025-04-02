@@ -1,17 +1,13 @@
-- name: Install htop
-  become: true
-  ansible.builtin.apt:
-    name: htop
-    state: present
-
-- name: Make htop config folder
-  ansible.builtin.file:
-    path: "{{ ansible_facts.user_dir }}/.config/htop/"
-    mode: u=rwx,g=rwx,o=rx
-    state: directory
-
 - name: Configure htop
-  ansible.builtin.copy:
-    src: htoprc
-    dest: "{{ ansible_facts.user_dir }}/.config/htop/htoprc"
-    mode: u=rw,g=,o=
+  block:
+    - name: Make htop config folder
+      ansible.builtin.file:
+        path: "{{ ansible_facts.user_dir }}/.config/htop/"
+        mode: u=rwx,g=rwx,o=rx
+        state: directory
+
+    - name: Configure htop
+      ansible.builtin.copy:
+        src: htoprc
+        dest: "{{ ansible_facts.user_dir }}/.config/htop/htoprc"
+        mode: u=rw,g=,o=

@@ -4,35 +4,17 @@
     update_cache: true
     upgrade: true
 
-- name: Remove Ubuntu Landscape, Pro Client, and Snap
+- name: Remove Packages
   become: true
   ansible.builtin.apt:
-    name:
-      - ubuntu-pro-client
-      - ubuntu-pro-client-l10n
-      - landscape-client
-      - landscape-common
-      - snapd
+    name: "{{ common_apt_packages_remove }}"
     state: absent
     purge: true
-    autoremove: true
 
-- name: Install WSLu
+- name: Add Packages
   become: true
   ansible.builtin.apt:
-    name: wslu
-
-- name: Install Fish shell
-  become: true
-  ansible.builtin.apt:
-    name: fish
-
-- name: Install Extras
-  become: true
-  loop_control:
-    loop_var: apt_extra
-  loop:
-    - ncdu
-  ansible.builtin.apt:
-    name: "{{ apt_extra }}"
+    name: "{{ common_apt_packages_remove }}"
     state: present
+    install_recommends: false
+    purge: true

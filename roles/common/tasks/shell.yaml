@@ -1,7 +1,10 @@
-- name: Set user shell to fish
+- name: Set user shells to fish
   become: true
+  loop:
+    - "{{ ansible_facts.user_id }}"
+    - root
   ansible.builtin.user:
-    name: "{{ ansible_facts.user_id }}"
+    name: "{{ item }}"
     shell: /usr/bin/fish
 
 - name: Make user fish directories
@@ -11,9 +14,3 @@
       - -c
       - __fish_on_interactive
     creates: "{{ ansible_facts.user_dir }}/.config/fish"
-
-- name: Set root user shell to fish
-  become: true
-  ansible.builtin.user:
-    name: root
-    shell: /usr/bin/fish

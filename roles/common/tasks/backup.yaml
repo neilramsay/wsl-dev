@@ -1,11 +1,11 @@
-- name: Install Backup Tools
-  become: true
-  loop_control:
-    loop_var: backup_tool
-  loop:
-    - backupninja
-    - borgbackup2
-  ansible.builtin.apt:
-    name: "{{ backup_tool }}"
-    state: present
-    install_recommends: false
+# - name: Install Backup Tools
+#   become: true
+#   loop_control:
+#     loop_var: backup_tool
+#   loop:
+#     - backupninja
+#     - borgbackup2
+#   ansible.builtin.apt:
+#     name: "{{ backup_tool }}"
+#     state: present
+#     install_recommends: false
