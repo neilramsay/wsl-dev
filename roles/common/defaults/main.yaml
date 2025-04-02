@@ -1,8 +1,13 @@
-apt_packages_install:
+common_apt_packages_install:
   - fish
-  -
+  - ncdu
+  - unzip
+  - build-essential
+  - backupninja
+  - borgbackup2
+  - htop
 
-apt_packages_remove:
+common_apt_packages_remove:
   - ubuntu-pro-client
   - ubuntu-pro-client-l10n
   - landscape-client
