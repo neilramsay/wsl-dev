@@ -31,6 +31,10 @@
           key: helper
           value:
             /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+        - section: init
+          key: templateDir
+          value: ~/.git-template
+
       community.general.ini_file:
         path: "{{ ansible_facts.user_dir }}/.gitconfig"
         mode: u=rw,g=r,o=r
@@ -122,3 +126,9 @@
         src: gitmessage.txt
         dest: "{{ ansible_facts.user_dir }}/.gitmessage"
         mode: u=rw,g=r,o=r
+
+    - name: Make Git Init Template Directory
+      ansible.builtin.file:
+        state: directory
+        path: "{{ ansible_facts.user_dir }}/.git-template"
+        mode: u=rwx,g=rwx,o=rx

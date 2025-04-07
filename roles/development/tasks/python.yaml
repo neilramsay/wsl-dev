@@ -88,3 +88,21 @@
       - install
       - ptpython@latest
     creates: "{{ ansible_facts.user_dir }}/.local/bin/"
+
+- name: Pre-commit
+  block:
+    - name: Install Pre-Commit
+      ansible.builtin.command:
+        argv:
+          - uv
+          - tool
+          - install
+          - pre-commit
+        creates: "{{ ansible_facts.user_dir }}/.local/bin/pre-commit"
+    - name: Add Pre-Commit to Git Init Template
+      ansible.builtin.command:
+        argv:
+          - pre-commit
+          - init-templatedir
+          - ~/.git-template
+        creates: "{{ ansible_facts.user_dir }}/.git-template/hooks/pre-commit"
