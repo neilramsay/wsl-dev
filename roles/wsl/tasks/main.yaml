@@ -5,7 +5,6 @@
 
 - name: Ensure SystemD User directory permissions
   become: true
-  async: 10
   ansible.builtin.file:
     path: /run/user/{{ ansible_facts.user_gid }}
     state: directory
@@ -15,7 +14,6 @@
 
 - name: Ensure SystemD User running
   become: true
-  async: 10
   ansible.builtin.systemd_service:
     name: user@{{ ansible_facts.user_gid }}
     state: started

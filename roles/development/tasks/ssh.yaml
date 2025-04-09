@@ -23,7 +23,6 @@
     creates: "{{ ansible_facts.user_dir }}/.config/systemd/user/sockets.target.wants/windows-ssh-agent.socket"
 
 - name: Set user SSH Agent Socket path
-  async: 10
   ansible.builtin.command:
     argv:
       - mise

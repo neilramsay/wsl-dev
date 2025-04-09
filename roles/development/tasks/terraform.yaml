@@ -1,5 +1,4 @@
 - name: Install Terraform
-  async: 30
   ansible.builtin.command:
     argv:
       - mise
@@ -9,7 +8,6 @@
     creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/terraform/latest/terraform"
 
 - name: Install Terraform Lint
-  async: 30
   ansible.builtin.command:
     argv:
       - mise
