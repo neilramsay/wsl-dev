@@ -6,6 +6,7 @@ common_apt_packages_install:
   - backupninja
   - borgbackup2
   - htop
+  - bind9-dnsutils
 
 common_apt_packages_remove:
   - ubuntu-pro-client
