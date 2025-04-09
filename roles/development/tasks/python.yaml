@@ -1,14 +1,14 @@
-- name: Install Python 3.13 (global default) via Mise
-  ansible.builtin.command:
-    cmd: mise use -g python@3.13
-    creates: "{{ ansible_facts.user_dir }}/\
-      .local/share/mise/installs/python/3.13/bin/python3"
+# - name: Install Python 3.13 (global default) via Mise
+#   ansible.builtin.command:
+#     cmd: mise use -g python@3.13
+#     creates: "{{ ansible_facts.user_dir }}/\
+#       .local/share/mise/installs/python/3.13/bin/python3"
 
-- name: Install Python 3.12 via Mise
-  ansible.builtin.command:
-    cmd: mise install python@3.12
-    creates: "{{ ansible_facts.user_dir }}/\
-      .local/share/mise/installs/python/3.12/bin/python3"
+# - name: Install Python 3.12 via Mise
+#   ansible.builtin.command:
+#     cmd: mise install python@3.12
+#     creates: "{{ ansible_facts.user_dir }}/\
+#       .local/share/mise/installs/python/3.12/bin/python3"
 
 - name: Require Pip to use a Virtual Environment
   ansible.builtin.command:
@@ -61,6 +61,18 @@
           - "{{ item }}"
       changed_when: true
 
+- name: Install UV Python Versions
+  loop:
+    - "3.13"
+    - "3.14"
+  ansible.builtin.command:
+    argv:
+      - uv
+      - python
+      - install
+      - "{{ item }}"
+    creates: "{{ ansible_facts.user_dir }}/.local/share/uv/python/*{{ item }}*"
+
 - name: Ruff
   block:
     - name: Install Ruff
@@ -87,7 +99,7 @@
       - tool
       - install
       - ptpython@latest
-    creates: "{{ ansible_facts.user_dir }}/.local/bin/"
+    creates: "{{ ansible_facts.user_dir }}/.local/bin/ptpython"
 
 - name: Pre-commit
   block:
