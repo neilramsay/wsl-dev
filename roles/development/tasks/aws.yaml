@@ -11,9 +11,12 @@
           - git+https://github.com/aws/aws-cli.git@v2
         creates: "{{ ansible_facts.user_dir }}/.local/bin/aws"
     - name: AWS Completer
+      loop:
+        - aws.fish
+        - set.fish
       ansible.builtin.copy:
         src: fish/aws.fish
-        dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/aws.fish"
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/{{ item }}"
         mode: u=rw,g=rw,o=r
 
 - name: AWS SAM CLI
