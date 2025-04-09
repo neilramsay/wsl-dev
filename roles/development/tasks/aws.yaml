@@ -82,3 +82,38 @@
       - install
       - cfn-lint
     creates: "{{ ansible_facts.user_dir }}/.local/bin/cfn-lint"
+
+- name: AWS CLI - SSO-Profiles plugin
+  block:
+    - name: Create user local aws-cli venv
+      ansible.builtin.command:
+        argv:
+          - python
+          - -m
+          - venv
+          - "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins"
+        creates: "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins"
+
+    - name: Configure AWS CLI plugins path
+      community.general.ini_file:
+        path: "{{ ansible_facts.user_dir }}/.aws/config"
+        mode: u=rw,g=,o=
+        section: plugins
+        option: cli_legacy_plugin_path
+        value: "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins"
+
+    - name: Install SSO-Profiles plugin
+      ansible.builtin.command:
+        argv:
+          - "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins/bin/pip"
+          - install
+          - git+https://github.com/neilramsay/aws-cli-sso-profiles-plugin.git
+        creates: "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins/lib/python*/site-packages/aws_cli_sso_profiles_plugin"
+
+    - name: Add SSO-Profiles plugin to Config
+      community.general.ini_file:
+        path: "{{ ansible_facts.user_dir }}/.aws/config"
+        mode: u=rw,g=,o=
+        section: plugins
+        option: sso_profile
+        value: aws_cli_sso_profiles_plugin.sso_profiles
