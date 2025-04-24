@@ -1,0 +1,30 @@
+- name: Install Rust
+  block:
+    - name: Check if cargo is installed
+      ansible.builtin.stat:
+        path: " {{ ansible_facts.user_dir }}/.cargo/bin/cargo"
+      register: cargo_exists
+      ignore_errors: true
+      changed_when: false
+      tags:
+        - rust
+
+    - name: Download Installer
+      when: not cargo_exists.stat.exists
+      ansible.builtin.get_url:
+        url: https://sh.rustup.rs
+        dest: /tmp/sh.rustup.rs
+        mode: u=rwx,g=rx,o=rx
+        force: true
+      tags:
+        - rust
+
+    - name: Install rust/cargo
+      when: not cargo_exists.stat.exists
+      ansible.builtin.command:
+        argv:
+          - /tmp/sh.rustup.rs
+          - -y
+        creates: "{{ ansible_facts.user_dir }}/.cargo/bin/cargo"
+      tags:
+        - rust

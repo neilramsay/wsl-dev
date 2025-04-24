@@ -1,0 +1,4 @@
+set CARGO_BIN "{{ ansible_facts.user_dir }}/.cargo/bin"
+if not string match -q -- $CARGO_BIN $PATH
+  fish_add_path $CARGO_BIN
+end
