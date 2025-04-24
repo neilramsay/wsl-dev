@@ -78,6 +78,14 @@
       - cfn-lint
     creates: "{{ ansible_facts.user_dir }}/.local/bin/cfn-lint"
 
+- name: CloudFormation Guard
+  ansible.builtin.command:
+    argv:
+      - cargo
+      - install
+      - cfn-guard
+    creates: "{{ ansible_facts.user_dir }}/.cargo/bin/cfn-guard"
+
 - name: AWS CLI - SSO-Profiles plugin
   block:
     - name: Create user local aws-cli venv
