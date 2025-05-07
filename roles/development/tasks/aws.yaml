@@ -14,7 +14,7 @@
         - aws.fish
         - set.fish
       ansible.builtin.copy:
-        src: fish/aws.fish
+        src: fish/{{ item }}
         dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/{{ item }}"
         mode: u=rw,g=rw,o=r
 
