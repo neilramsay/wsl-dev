@@ -6,8 +6,9 @@
           - mise
           - use
           - --global
-          - nodejs@22
+          - nodejs@24
         creates: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/node/latest/bin/node"
+
     - name: Install PNPM
       ansible.builtin.command:
         argv:
