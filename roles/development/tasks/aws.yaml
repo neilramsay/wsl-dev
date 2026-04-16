@@ -104,6 +104,7 @@
       - install
       - cfn-guard
     creates: "{{ ansible_facts.user_dir }}/.cargo/bin/cfn-guard"
+  when: false
 
 - name: AWS CLI - SSO-Profiles plugin
   block:
