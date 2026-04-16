@@ -32,3 +32,17 @@
         src: pnpm/pnpm.fish.j2
         dest: "{{ ansible_facts.user_dir }}/.config/fish/conf.d/pnpm.fish"
         mode: u=rw,g=rw,o=r
+    - name: PNPM Completion Generation
+      ansible.builtin.command:
+        argv:
+          - "{{ ansible_facts.user_dir }}/.local/share/mise/shims/pnpm"
+          - completion
+          - fish
+        creates: "{{ ansible_facts.user_dir }}/.config/fish/completions/pnpm.fish"
+      register: development_fish_completions_pnpm
+    - name: PNPM Completion File
+      ansible.builtin.copy:
+        content: "{{ development_fish_completions_pnpm.stdout }}"
+        dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/pnpm.fish"
+        mode: u=rw,g=rw,o=r
+        force: false
