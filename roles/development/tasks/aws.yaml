@@ -43,6 +43,16 @@
         mode: u=rw,g=rw,o=r
         force: false
 
+- name: Disable SAM Telemetry
+  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-telemetry.html
+  ansible.builtin.command:
+    argv:
+      - mise
+      - set
+      - --global
+      - SAM_CLI_TELEMETRY=0
+  changed_when: '"SAM_CLI_TELEMETRY" not in ansible_env'
+
 - name: AWS CDK
   ansible.builtin.command:
     argv:
@@ -54,6 +64,15 @@
   environment:
     PNPM_HOME: "{{ ansible_facts.user_dir }}/.local/share/pnpm"
     PATH: "{{ ansible_env.PATH }}:{{ ansible_facts.user_dir }}/.local/share/pnpm"
+
+- name: Disable CDK Telemetry
+  ansible.builtin.command:
+    argv:
+      - mise
+      - set
+      - --global
+      - CDK_DISABLE_CLI_TELEMETRY=true
+  changed_when: '"CDK_DISABLE_CLI_TELEMETRY" not in ansible_env'
 
 - name: AWS CodeCommit Git
   ansible.builtin.command:
