@@ -51,7 +51,7 @@
       - set
       - --global
       - SAM_CLI_TELEMETRY=0
-  changed_when: '"SAM_CLI_TELEMETRY" not in ansible_env'
+  changed_when: lookup('ansible.builtin.env', 'SAM_CLI_TELEMETRY', default=undef()) is not undefined
 
 - name: AWS CDK
   ansible.builtin.command:
@@ -63,7 +63,7 @@
     creates: "{{ ansible_facts.user_dir }}/.local/share/pnpm/cdk"
   environment:
     PNPM_HOME: "{{ ansible_facts.user_dir }}/.local/share/pnpm"
-    PATH: "{{ ansible_env.PATH }}:{{ ansible_facts.user_dir }}/.local/share/pnpm"
+    PATH: "{{ lookup('ansible.builtin.env', 'PATH') }}:{{ ansible_facts.user_dir }}/.local/share/pnpm"
 
 - name: Disable CDK Telemetry
   ansible.builtin.command:
@@ -72,7 +72,7 @@
       - set
       - --global
       - CDK_DISABLE_CLI_TELEMETRY=true
-  changed_when: '"CDK_DISABLE_CLI_TELEMETRY" not in ansible_env'
+  changed_when: lookup('ansible.builtin.env', 'CDK_DISABLE_CLI_TELEMETRY', default=undef()) is not undefined
 
 - name: AWS CodeCommit Git
   ansible.builtin.command:
