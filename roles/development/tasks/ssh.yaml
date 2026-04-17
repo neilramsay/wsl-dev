@@ -28,5 +28,5 @@
       - mise
       - set
       - --global
-      - SSH_AUTH_SOCK={{ lookup('ansible.builtin.env', 'XDG_RUNTIME_DIR', default=undef()) }}ssh/ssh-agent.sock
+      - SSH_AUTH_SOCK={{ lookup('ansible.builtin.env', 'XDG_RUNTIME_DIR', default=undef()) }}/ssh/ssh-agent.sock
   changed_when: true
