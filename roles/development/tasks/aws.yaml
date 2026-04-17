@@ -116,6 +116,7 @@
           - venv
           - "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins"
         creates: "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins"
+      when: false
 
     - name: Configure AWS CLI plugins path
       community.general.ini_file:
@@ -124,6 +125,7 @@
         section: plugins
         option: cli_legacy_plugin_path
         value: "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins"
+      when: false
 
     - name: Install SSO-Profiles plugin
       ansible.builtin.command:
@@ -132,6 +134,7 @@
           - install
           - git+https://github.com/neilramsay/aws-cli-sso-profiles-plugin.git
         creates: "{{ ansible_facts.user_dir }}/.local/share/aws-cli-plugins/lib/python*/site-packages/aws_cli_sso_profiles_plugin"
+      when: false
 
     - name: Add SSO-Profiles plugin to Config
       community.general.ini_file:
@@ -140,3 +143,4 @@
         section: plugins
         option: sso_profile
         value: aws_cli_sso_profiles_plugin.sso_profiles
+      when: false
