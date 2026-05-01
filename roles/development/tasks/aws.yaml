@@ -63,7 +63,7 @@
     creates: "{{ ansible_facts.user_dir }}/.local/share/pnpm/cdk"
   environment:
     PNPM_HOME: "{{ ansible_facts.user_dir }}/.local/share/pnpm"
-    PATH: "{{ lookup('ansible.builtin.env', 'PATH') }}:{{ ansible_facts.user_dir }}/.local/share/pnpm"
+    PATH: "{{ ansible_facts.user_dir }}/.local/share/pnpm:{{ lookup('ansible.builtin.env', 'PATH') }}"
 
 - name: Disable CDK Telemetry
   ansible.builtin.command:
