@@ -3,7 +3,7 @@
     - name: Install AWS CLI
       ansible.builtin.command:
         argv:
-          - uv
+          - "{{ ansible_facts.user_dir }}/.local/share/mise/shims/uv"
           - tool
           - install
           - --python=3.12
@@ -23,7 +23,7 @@
     - name: Install AWS SAM CLI
       ansible.builtin.command:
         argv:
-          - uv
+          - "{{ ansible_facts.user_dir }}/.local/share/mise/shims/uv"
           - tool
           - install
           - aws-sam-cli
@@ -77,7 +77,7 @@
 - name: AWS CodeCommit Git
   ansible.builtin.command:
     argv:
-      - uv
+      - "{{ ansible_facts.user_dir }}/.local/share/mise/shims/uv"
       - tool
       - install
       - git-remote-codecommit
@@ -91,7 +91,7 @@
 - name: CloudFormation Lint
   ansible.builtin.command:
     argv:
-      - uv
+      - "{{ ansible_facts.user_dir }}/.local/share/mise/shims/uv"
       - tool
       - install
       - cfn-lint
