@@ -17,4 +17,12 @@ else
     source ansible/bin/activate
 fi
 
-ansible-pull -U https://github.com/neilramsay/${PROJECT}.git
+if ! test -f /usr/bin/git; then
+    sudo apt-get update &&
+    sudo apt-get install git
+fi
+
+cd /tmp
+git clone https://github.com/neilramsay/${PROJECT}.git
+cd "${PROJECT}"
+ansible-playbook -K local.yml
