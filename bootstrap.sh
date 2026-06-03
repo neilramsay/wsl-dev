@@ -9,9 +9,9 @@ else
     sudo true
 fi
 
-if ! test -d ansible; then
-    python3 -m venv ansible &&
-    source ansible/bin/activate &&
+if ! test -d /tmp/ansible; then
+    python3 -m venv /tmp/ansible &&
+    source /tmp/ansible/bin/activate &&
     pip install --require-virtualenv ansible
 else
     source ansible/bin/activate
