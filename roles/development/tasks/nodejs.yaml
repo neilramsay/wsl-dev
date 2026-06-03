@@ -22,12 +22,12 @@
         path: "{{ ansible_facts.user_dir }}/.local/share/pnpm"
         state: directory
         mode: u=rwx,g=rwx,o=rx
-    - name: Copy PNPM executable to working dir
-      ansible.builtin.copy:
-        remote_src: true
-        src: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/pnpm/latest/pnpm"
-        dest: "{{ ansible_facts.user_dir }}/.local/share/pnpm/pnpm"
-        mode: u=rwx,g=x,o=x
+    # - name: Copy PNPM executable to working dir
+    #   ansible.builtin.copy:
+    #     remote_src: true
+    #     src: "{{ ansible_facts.user_dir }}/.local/share/mise/installs/pnpm/latest/pnpm"
+    #     dest: "{{ ansible_facts.user_dir }}/.local/share/pnpm/pnpm"
+    #     mode: u=rwx,g=x,o=x
     - name: PNPM Fish env
       ansible.builtin.template:
         src: pnpm/pnpm.fish.j2
