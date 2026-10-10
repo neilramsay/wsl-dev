@@ -1,0 +1,15 @@
+- name: Gather OS Specific Variables
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    files:
+      - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yaml"
+      - "{{ ansible_distribution }}.yaml"
+    paths:
+      - vars
+
+- name: Cleanup Packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: absent
+    diff_mode: true
+  loop: "{{ cleanup_remove_packages }}"

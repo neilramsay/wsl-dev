@@ -1,6 +1,7 @@
 - name: Common Roles
   hosts: localhost
   roles:
-    - common
-    - wsl
-    - development
+    - cleanup
+    # - common
+    # - wsl
+    # - development

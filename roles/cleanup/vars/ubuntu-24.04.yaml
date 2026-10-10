@@ -1,0 +1,7 @@
+---
+cleanup_remove_packages:
+  - ubuntu-pro-client
+  - ubuntu-pro-client-l10n
+  - landscape-client
+  - landscape-common
+  - snapd
