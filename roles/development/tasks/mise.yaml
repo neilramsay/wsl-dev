@@ -15,12 +15,19 @@
         url: https://mise.jdx.dev/gpg-key.pub
         dest: /etc/apt/keyrings/mise-archive-keyring.pub
         mode: u=rw,g=r,o=r
+      register: development_mise_apt_keyring
 
     - name: Mise Apt Source
-      ansible.builtin.apt_repository:
-        repo: >
-          deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.pub arch=amd64]
-          https://mise.jdx.dev/deb stable main
+      ansible.builtin.deb822_repository:
+        name: Mise
+        architectures:
+          - amd64
+        signed_by: "{{ development_mise_apt_keyring.dest }}"
+        uris:
+          - https://mise.jdx.dev/deb
+        suites: stable
+        components:
+          - main
 
     - name: Install Mise
       ansible.builtin.apt:
