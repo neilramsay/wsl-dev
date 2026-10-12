@@ -44,14 +44,14 @@
     - name: Get Mise Completion
       ansible.builtin.command:
         cmd: mise completion fish
-      register: mise_fish_completion
-      changed_when: mise_fish_completion.rc != 0
+      register: development_mise_fish_completion
+      changed_when: development_mise_fish_completion.rc != 0
 
     - name: Write Mise Completion Files
-      when: mise_fish_completion.rc == 0
+      when: development_mise_fish_completion.rc == 0
       ansible.builtin.copy:
         dest:
           "{{ ansible_facts.user_dir }}/\
           .config/fish/completions/mise.fish"
         mode: u=rw,g=rw,o=
-        content: "{{ mise_fish_completion.stdout }}"
+        content: "{{ development_mise_fish_completion.stdout }}"

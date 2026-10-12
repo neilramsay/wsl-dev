@@ -3,14 +3,14 @@
     - name: Check if cargo is installed
       ansible.builtin.stat:
         path: " {{ ansible_facts.user_dir }}/.cargo/bin/cargo"
-      register: cargo_exists
+      register: development_cargo_exists
       ignore_errors: true
       changed_when: false
       tags:
         - rust
 
     - name: Download Installer
-      when: not cargo_exists.stat.exists
+      when: not development_cargo_exists.stat.exists
       ansible.builtin.get_url:
         url: https://sh.rustup.rs
         dest: /tmp/sh.rustup.rs
@@ -20,7 +20,7 @@
         - rust
 
     - name: Install rust/cargo
-      when: not cargo_exists.stat.exists
+      when: not development_cargo_exists.stat.exists
       ansible.builtin.command:
         argv:
           - /tmp/sh.rustup.rs

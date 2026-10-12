@@ -52,10 +52,10 @@
           - generate-shell-completion
           - fish
         creates: "{{ ansible_facts.user_dir }}/.config/fish/completions/uv.fish"
-      register: fish_completions_uv
+      register: development_fish_completions_uv
     - name: Write UV Fish Completions # noqa: no-handler
       ansible.builtin.copy:
-        content: "{{ fish_completions_uv.stdout }}"
+        content: "{{ development_fish_completions_uv.stdout }}"
         dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/uv.fish"
         mode: u=rw,g=rw,o=rw
         force: false

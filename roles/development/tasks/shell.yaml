@@ -31,11 +31,11 @@
             recurse: true
             patterns:
               - lsd.fish
-          register: fish_completions_lsd_paths
+          register: development_fish_completions_lsd_paths
         - name: Install LSD Completion
           ansible.builtin.copy:
             remote_src: true
-            src: "{{ fish_completions_lsd_paths.files[0].path }}"
+            src: "{{ development_fish_completions_lsd_paths.files[0].path }}"
             dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/lsd.fish"
             mode: u=rw,g=r,o=r
         - name: Install LSD Fish Functions
@@ -63,11 +63,11 @@
             recurse: true
             patterns:
               - rg.fish
-          register: fish_completions_ripgrep_paths
+          register: development_fish_completions_ripgrep_paths
         - name: Install RipGrep Completions
           ansible.builtin.copy:
             remote_src: true
-            src: "{{ fish_completions_ripgrep_paths.files[0].path }}"
+            src: "{{ development_fish_completions_ripgrep_paths.files[0].path }}"
             dest: "{{ ansible_facts.user_dir }}/.config/fish/completions/rg.fish"
             mode: u=rw,g=r,o=r
     - name: Install RipGrep Fish Functions
